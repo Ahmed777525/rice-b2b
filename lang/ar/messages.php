@@ -118,6 +118,7 @@ return [
     'price' => 'السعر',
     'your_payment_information_secured' => 'معلومات الدفع الخاصة بك مؤمنة بتشفير SSL',
     'optional_notes_for_order' => 'ملاحظات اختيارية لطلبك',
+    'place_order' => 'تقديم الطلب',
     
     // Admin Panel
     'admin_dashboard' => 'لوحة التحكم',
@@ -180,8 +181,35 @@ return [
     'subtotal' => 'المجموع الفرعي',
     'tax_rate' => 'نسبة الضريبة',
     
-    // Pages
+// Pages
     'privacy_policy' => 'سياسة الخصوصية',
     'terms_conditions' => 'الشروط والأحكام',
     'contact_success' => 'تم إرسال رسالتك بنجاح. سنتواصل معك قريباً.',
+    
+    // Orders
+    'track_your_orders' => 'تتبع طلباتك بسهولة',
+    'no_orders' => 'لا توجد طلبات',
+    'no_orders_message' => 'لم تقم بأي طلبات بعد. ابدأ التسوق الآن!',
+    'start_shopping' => 'ابدأ التسوق',
+    'order_again' => 'طلب مرة أخرى',
+    'order_notes' => 'ملاحظات الطلب',
+    'order_date' => 'تاريخ الطلب',
+    'cancellation_reason' => 'سبب الإلغاء',
+    'confirm_cancel_order' => 'هل أنت متأكد من إلغاء هذا الطلب؟',
+    'cancel_order' => 'إلغاء الطلب',
+    'download_invoice' => 'تحميل الفاتورة',
+    'shipping_address' => 'عنوان الشحن',
+    'city' => 'المدينة',
+    'order_approved' => 'تمت الموافقة',
+    'order_shipped' => 'تم الشحن',
+    'order_completed' => 'مكتمل',
+    'timeline' => 'الخط الزمني',
+    'order_actions' => 'إجراءات الطلب',
+    'discount' => 'الخصم',
+    'wholesale' => 'جملة',
+    'payment_method_visa' => 'فيزا',
+    'payment_method_mada' => 'مدى',
+    'payment_method_paypal' => 'باي بال',
+    'payment_pending' => 'في انتظار الدفع',
+    'payment_failed' => 'فشل الدفع',
 ];

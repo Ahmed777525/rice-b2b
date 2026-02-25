@@ -42,13 +42,13 @@ class CheckoutController extends Controller
         return view('shop.checkout.index', compact('cart', 'paymentMethods', 'gatewayInfo'));
     }
 
-    /**
+/**
      * معالجة الطلب والدفع
      */
     public function process(Request $request)
     {
         $request->validate([
-            'payment_method' => 'required|string|in:visa,mada,paypal',
+            'payment_method' => 'required|string|in:visa,mada,paypal,cod',
             'notes' => 'nullable|string|max:1000'
         ]);
 
@@ -59,7 +59,7 @@ class CheckoutController extends Controller
                 ->with('error', __('messages.cart_is_empty'));
         }
 
-        // التحقق من توفر المخزون
+        // التحقق من توفر المخزون (للتأكيد فقط - سيتم الخصم عند الموافقة)
         foreach ($cart->items as $item) {
             $stock = $item->product->stocks()
                 ->where('branch_id', $cart->branch_id)
@@ -74,16 +74,33 @@ class CheckoutController extends Controller
             }
         }
 
-        // إنشاء الطلب
+        // إنشاء الطلب بحالة pending
         $order = $this->orderService->createOrder([
-            'notes' => $request->notes
+            'notes' => $request->notes,
+            'payment_method' => $request->payment_method
         ]);
 
         if (!$order) {
             return back()->with('error', 'فشل في إنشاء الطلب');
         }
 
-        // إنشاء فاتورة الدفع
+        // معالجة الدفع عند الاستلام (COD)
+        if ($request->payment_method === 'cod') {
+            // تحديث حالة الدفع أنها pending (سيتم التحقق عند الاستلام)
+            $order->update([
+                'payment_status' => 'pending',
+                'status' => 'pending' // الطلب في انتظار الموافقة
+            ]);
+
+            // مسح السلة
+            $this->cartService->clearCart();
+
+            // توجيه لصفحة نجاح الطلب
+            return redirect()->route('shop.checkout.success', $order->id)
+                ->with('success', __('messages.order_created_successfully'));
+        }
+
+        // للدفع الإلكتروني - إنشاء فاتورة دفع
         $paymentResult = $this->paymentService->createInvoice(
             $order,
             $request->payment_method

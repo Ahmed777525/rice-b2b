@@ -971,7 +971,7 @@
         </div>
     </section>
     
-    <!-- Products Preview -->
+    <!-- Products Preview - From Database -->
     <section class="products-section">
         <div class="container">
             <div class="section-header" data-aos="fade-up">
@@ -980,97 +980,61 @@
             </div>
             
             <div class="row g-4">
+                @forelse($products->take(6) as $index => $product)
+                @php
+                    $price = $product->prices()->where('is_active', true)->first();
+                    $stock = $product->stocks()->sum('available_quantity');
+                    $isNew = $product->created_at->diffInDays(now()) <= 7;
+                @endphp
                 <div class="col-md-4">
-                    <div class="product-card" data-aos="fade-up" data-aos-delay="100">
+                    <div class="product-card" data-aos="fade-up" data-aos-delay="{{ ($index + 1) * 100 }}">
                         <div class="product-image">
+                            @if($isNew)
+                            <span class="product-badge">{{ $isArabic ? 'جديد' : 'NEW' }}</span>
+                            @else
                             <span class="product-badge">{{ $isArabic ? 'الأكثر مبيعاً' : 'Best Seller' }}</span>
-                            <i class="fas fa-seedling"></i>
+                            @endif
+                            <i class="fas fa-sack-grain"></i>
                         </div>
                         <div class="product-body">
-                            <h5 class="product-title">{{ $isArabic ? 'أرز بني عضوي' : 'Organic Brown Rice' }}</h5>
-                            <p class="product-desc">{{ $isArabic ? 'أرز بني طبيعي غني بالألياف والفيتامينات' : 'Natural brown rice rich in fiber and vitamins' }}</p>
-                            <div class="product-price">
-                                <span class="currency">{{ $isArabic ? 'ر.س' : 'SAR' }}</span> 150
+                            <small class="text-success text-uppercase fw-bold">
+                                <i class="fas fa-tag me-1"></i>
+                                {{ $product->category?->localized_name ?? ($isArabic ? 'أرز' : 'Rice') }}
+                            </small>
+                            <h5 class="product-title">{{ $product->localized_name }}</h5>
+                            <p class="product-desc">{{ Str::limit($product->description, 80) }}</p>
+                            <div class="d-flex justify-content-between align-items-center">
+                                @if($price)
+                                <div class="product-price">
+                                    <span class="currency">{{ $isArabic ? 'ر.س' : 'SAR' }}</span> {{ number_format($price->price, 2) }}
+                                </div>
+                                @else
+                                <div class="product-price">
+                                    <small class="text-muted">{{ $isArabic ? 'السعر غير متاح' : 'Price N/A' }}</small>
+                                </div>
+                                @endif
+                                <small class="text-{{ $stock > 0 ? 'success' : 'danger' }}">
+                                    <i class="fas fa-box me-1"></i>
+                                    {{ number_format($stock) }} {{ $isArabic ? 'كجم' : 'KG' }}
+                                </small>
                             </div>
+                            <a href="{{ route('shop.products.show', $product->slug) }}" class="btn btn-outline-success btn-sm w-100 mt-3 rounded-pill">
+                                <i class="fas fa-eye me-1"></i>
+                                {{ $isArabic ? 'عرض التفاصيل' : 'View Details' }}
+                            </a>
                         </div>
                     </div>
                 </div>
-                <div class="col-md-4">
-                    <div class="product-card" data-aos="fade-up" data-aos-delay="200">
-                        <div class="product-image">
-                            <span class="product-badge">{{ $isArabic ? 'جديد' : 'New' }}</span>
-                            <i class="fas fa-snowflake"></i>
-                        </div>
-                        <div class="product-body">
-                            <h5 class="product-title">{{ $isArabic ? 'أرز بسمتي سوبر' : 'Super Basmati Rice' }}</h5>
-                            <p class="product-desc">{{ $isArabic ? 'أرز بسمتي هندي طويل الحبة' : 'Long grain Indian basmati rice' }}</p>
-                            <div class="product-price">
-                                <span class="currency">{{ $isArabic ? 'ر.س' : 'SAR' }}</span> 220
-                            </div>
-                        </div>
-                    </div>
+                @empty
+                <div class="col-12 text-center py-5">
+                    <i class="fas fa-box-open text-secondary fs-1 mb-3 d-block" style="opacity: 0.5;"></i>
+                    <h5 class="text-secondary">{{ $isArabic ? 'لا توجد منتجات متاحة حالياً' : 'No products available yet' }}</h5>
                 </div>
-                <div class="col-md-4">
-                    <div class="product-card" data-aos="fade-up" data-aos-delay="300">
-                        <div class="product-image">
-                            <i class="fas fa-sun"></i>
-                        </div>
-                        <div class="product-body">
-                            <h5 class="product-title">{{ $isArabic ? 'أرز مصري فاخر' : 'Premium Egyptian Rice' }}</h5>
-                            <p class="product-desc">{{ $isArabic ? 'أرز مصري عالي الجودة' : 'Premium quality Egyptian rice' }}</p>
-                            <div class="product-price">
-                                <span class="currency">{{ $isArabic ? 'ر.س' : 'SAR' }}</span> 180
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-md-4">
-                    <div class="product-card" data-aos="fade-up" data-aos-delay="100">
-                        <div class="product-image">
-                            <i class="fas fa-gem"></i>
-                        </div>
-                        <div class="product-body">
-                            <h5 class="product-title">{{ $isArabic ? 'أرز ياسمين' : 'Jasmin Rice' }}</h5>
-                            <p class="product-desc">{{ $isArabic ? 'أرز تايلاندي عطر' : 'Fragrant Thai rice' }}</p>
-                            <div class="product-price">
-                                <span class="currency">{{ $isArabic ? 'ر.س' : 'SAR' }}</span> 195
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-md-4">
-                    <div class="product-card" data-aos="fade-up" data-aos-delay="200">
-                        <div class="product-image">
-                            <span class="product-badge">{{ $isArabic ? 'خصم 20%' : '20% Off' }}</span>
-                            <i class="fas fa-tractor"></i>
-                        </div>
-                        <div class="product-body">
-                            <h5 class="product-title">{{ $isArabic ? 'أرز حراتي' : 'Harati Rice' }}</h5>
-                            <p class="product-desc">{{ $isArabic ? 'أرز محلي عالي الجودة' : 'High quality local rice' }}</p>
-                            <div class="product-price">
-                                <span class="currency">{{ $isArabic ? 'ر.س' : 'SAR' }}</span> 120
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-md-4">
-                    <div class="product-card" data-aos="fade-up" data-aos-delay="300">
-                        <div class="product-image">
-                            <i class="fas fa-water"></i>
-                        </div>
-                        <div class="product-body">
-                            <h5 class="product-title">{{ $isArabic ? 'أرز قصير الحبوب' : 'Short Grain Rice' }}</h5>
-                            <p class="product-desc">{{ $isArabic ? 'مثالي للمقبلات والحلويات' : 'Perfect for appetizers and desserts' }}</p>
-                            <div class="product-price">
-                                <span class="currency">{{ $isArabic ? 'ر.س' : 'SAR' }}</span> 140
-                            </div>
-                        </div>
-                    </div>
-                </div>
+                @endforelse
             </div>
             
             <div class="text-center mt-5" data-aos="fade-up">
-                <a href="{{ route('shop.products.index') }}" class="btn btn-success btn-lg px-5">
+                <a href="{{ route('shop.products.index') }}" class="btn btn-success btn-lg px-5 rounded-pill">
                     <i class="fas fa-eye me-2"></i>
                     {{ $isArabic ? 'عرض جميع المنتجات' : 'View All Products' }}
                 </a>

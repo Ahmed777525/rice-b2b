@@ -19,6 +19,18 @@ class OrderService
         $this->cartService = $cartService;
     }
 
+    // Alias for createOrderFromCart
+    public function createOrder(array $checkoutData): ?Order
+    {
+        $result = $this->createOrderFromCart($checkoutData);
+        
+        if ($result['success']) {
+            return $result['order'];
+        }
+        
+        return null;
+    }
+
     /**
      * إنشاء طلب جديد من السلة
      */
@@ -50,6 +62,13 @@ class OrderService
             // إنشاء رقم الطلب
             $orderNumber = Order::generateOrderNumber();
             
+// تحديد طريقة الدفع
+            $paymentMethod = $checkoutData['payment_method'] ?? 'visa';
+            
+            // تحديد حالة الدفع بناءً على طريقة الدفع
+            $paymentStatus = ($paymentMethod === 'cod') ? 'pending' : 'pending';
+            $orderStatus = 'pending'; // جميع الطلبات تبدأ كـ pending للموافقة
+
             // إنشاء الطلب
             $order = Order::create([
                 'order_number' => $orderNumber,
@@ -60,9 +79,12 @@ class OrderService
                 'user_phone' => $user->phone,
                 'company_name' => $user->company_name,
                 'commercial_register' => $user->commercial_register,
-                'shipping_address' => $checkoutData['shipping_address'],
+                'shipping_address' => $checkoutData['shipping_address'] ?? $user->address ?? 'غير محدد',
                 'shipping_city' => $checkoutData['shipping_city'] ?? null,
                 'shipping_phone' => $checkoutData['shipping_phone'] ?? $user->phone,
+                'payment_method' => $paymentMethod,
+                'payment_status' => $paymentStatus,
+                'status' => $orderStatus,
                 'subtotal' => $cart->subtotal,
                 'tax' => $cart->tax,
                 'shipping_cost' => $checkoutData['shipping_cost'] ?? 0,

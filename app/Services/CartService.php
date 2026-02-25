@@ -12,6 +12,12 @@ use Illuminate\Support\Facades\Auth;
 
 class CartService
 {
+    // Alias for getCurrentCart
+    public function getCart(): ?Cart
+    {
+        return $this->getCurrentCart();
+    }
+
     public function getCurrentCart(): ?Cart
     {
         $user = Auth::user();

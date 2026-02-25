@@ -17,11 +17,15 @@
     padding: 2rem 0;
 }
 
-.payment-method-card input {
+.payment-method-card {
+    cursor: pointer;
+}
+
+.payment-method-card input[type="radio"] {
     display: none;
 }
 
-.payment-method-card .payment-card {
+.payment-card {
     border: 2px solid #dee2e6;
     border-radius: 12px;
     padding: 25px 20px;
@@ -31,7 +35,7 @@
     background: white;
 }
 
-.payment-method-card input:checked + .payment-card {
+.payment-method-card input[type="radio"]:checked + .payment-card {
     border-color: var(--primary-color);
     background-color: rgba(46, 125, 50, 0.05);
     box-shadow: 0 4px 12px rgba(46, 125, 50, 0.15);
@@ -114,6 +118,7 @@
                             </div>
                         @endif
 
+                        <!-- Form with POST -->
                         <form action="{{ route('shop.checkout.process') }}" method="POST" id="checkout-form">
                             @csrf
                             
@@ -126,13 +131,17 @@
                                             <div class="payment-card">
                                                 <i class="{{ $method['icon'] }}" style="font-size: 2.5rem; color: {{ $method['color'] }};"></i>
                                                 <span class="mt-3 d-block fw-bold">
-                                                    {{ LaravelLocalization::getCurrentLocale() === 'ar' ? $method['name_ar'] : $method['name'] }}
+                                                    {{ app()->getLocale() === 'ar' ? $method['name_ar'] : $method['name'] }}
                                                 </span>
                                             </div>
                                         </label>
                                     </div>
                                 @endforeach
                             </div>
+
+                            @error('payment_method')
+                                <div class="alert alert-danger">{{ $message }}</div>
+                            @enderror
 
                             <!-- Order Notes -->
                             <div class="mb-4">
@@ -141,12 +150,20 @@
                                     placeholder="{{ __('messages.optional_notes_for_order') }}"></textarea>
                             </div>
 
-                            <!-- Submit Button -->
-                            <button type="submit" class="btn btn-primary btn-lg w-100">
+<!-- Submit Button -->
+                            <button type="submit" class="btn btn-primary btn-lg w-100" id="submitBtn">
                                 <i class="fas fa-lock me-2"></i>
-                                {{ __('messages.proceed_to_payment') }}
+                                {{ __('messages.place_order') }}
                             </button>
                         </form>
+                        
+                        <script>
+                        document.getElementById('checkout-form').addEventListener('submit', function(e) {
+                            var btn = document.getElementById('submitBtn');
+                            btn.disabled = true;
+                            btn.innerHTML = '<i class="fas fa-spinner fa-spin me-2"></i> جاري المعالجة...';
+                        });
+                        </script>
                     </div>
                 </div>
             </div>
@@ -184,7 +201,7 @@
                         
                         <div class="d-flex justify-content-between mb-3">
                             <span class="text-muted">{{ __('messages.shipping') }}</span>
-                            <span>{{ number_format($cart->shipping, 2) }} {{ __('messages.sar') }}</span>
+                            <span>{{ number_format($cart->shipping ?? 0, 2) }} {{ __('messages.sar') }}</span>
                         </div>
                         
                         <hr>
@@ -197,6 +214,7 @@
                 </div>
 
                 <!-- Branch Info -->
+                @if($cart->branch)
                 <div class="branch-card card mb-4">
                     <div class="card-body">
                         <h6 class="mb-3">
@@ -213,6 +231,7 @@
                         </p>
                     </div>
                 </div>
+                @endif
 
                 <!-- Security Info -->
                 <div class="text-center p-3 bg-light rounded">

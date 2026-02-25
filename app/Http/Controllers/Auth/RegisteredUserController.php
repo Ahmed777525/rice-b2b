@@ -22,7 +22,7 @@ class RegisteredUserController extends Controller
     public function create(): View
     {
         $branches = Branch::where('is_active', true)->get();
-        return view('auth.register-new', compact('branches'));
+return view('auth.register', compact('branches'));
     }
 
     /**

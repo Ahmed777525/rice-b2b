@@ -7,9 +7,45 @@
 
 @section('title', __('messages.products'))
 
+@section('styles')
+<style>
+.page-header {
+    background: linear-gradient(135deg, rgba(27,94,32,0.95), rgba(46,125,50,0.9)), url('https://images.unsplash.com/photo-1586201375761-83865001e31c?w=1920');
+    background-size: cover;
+    background-position: center;
+    padding: 180px 0 80px;
+    margin-top: 70px;
+}
+
+.page-header h1 { font-size: 3rem; font-weight: 800; color: white; margin-bottom: 10px; }
+.page-header p { font-size: 1.2rem; color: rgba(255,255,255,0.9); }
+.breadcrumb-item a { color: rgba(255,255,255,0.7) !important; text-decoration: none; }
+.breadcrumb-item.active { color: white !important; }
+
+@media (max-width: 768px) {
+    .page-header h1 { font-size: 2rem; }
+}
+</style>
+@endsection
+
 @section('content')
 <!-- Page Header -->
-<div class="bg-white rounded-3 shadow-sm p-4 mb-4">
+<section class="page-header">
+    <div class="container">
+        <nav aria-label="breadcrumb">
+            <ol class="breadcrumb mb-3">
+                <li class="breadcrumb-item"><a href="{{ route('home') }}">{{ $isArabic ? 'الرئيسية' : 'Home' }}</a></li>
+                <li class="breadcrumb-item active">{{ $isArabic ? 'المنتجات' : 'Products' }}</li>
+            </ol>
+        </nav>
+        <h1>{{ $isArabic ? 'منتجاتنا' : 'Our Products' }}</h1>
+        <p>{{ $isArabic ? 'أرز عالي الجودة للموزعين والتجار' : 'Premium Rice for Distributors and Traders' }}</p>
+    </div>
+</section>
+
+<!-- Products Content -->
+<div class="container py-5">
+    <div class="bg-white rounded-3 shadow-sm p-4 mb-4">
     <div class="d-flex justify-content-between align-items-center flex-wrap gap-3">
         <div class="d-flex align-items-center gap-3">
             <div class="bg-success bg-opacity-10 rounded-circle d-flex align-items-center justify-content-center" style="width: 50px; height: 50px;">

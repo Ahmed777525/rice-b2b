@@ -33,11 +33,11 @@ class OrderManagementController extends Controller
             $query->where('branch_id', $request->branch_id);
         }
 
-        // فلترة حسب تاريخ
-        if ($request->has('date_from')) {
+// فلترة حسب تاريخ
+        if ($request->filled('date_from')) {
             $query->whereDate('created_at', '>=', $request->date_from);
         }
-        if ($request->has('date_to')) {
+        if ($request->filled('date_to')) {
             $query->whereDate('created_at', '<=', $request->date_to);
         }
 

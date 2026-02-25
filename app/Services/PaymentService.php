@@ -18,7 +18,7 @@ class PaymentService
      */
     protected string $environment;
     
-    /**
+/**
      * @var array إعدادات الطرق الدفعية
      */
     protected array $paymentMethods = [
@@ -45,6 +45,14 @@ class PaymentService
             'gateway' => 'paypal',
             'icon' => 'fab fa-paypal',
             'color' => '#003087'
+        ],
+        'cod' => [
+            'name' => 'Cash on Delivery',
+            'name_ar' => 'الدفع عند الاستلام',
+            'enabled' => true,
+            'gateway' => 'cod',
+            'icon' => 'fas fa-money-bill-wave',
+            'color' => '#28a745'
         ]
     ];
 

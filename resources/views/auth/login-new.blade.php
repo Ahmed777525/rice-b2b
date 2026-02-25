@@ -18,11 +18,11 @@
     
     <style>
         :root {
-            --primary: #0d6efd;
-            --dark: #212529;
-            --light: #f8f9fa;
-            --border: #dee2e6;
-            --shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15);
+            --primary: #2E7D32;
+            --primary-dark: #1B5E20;
+            --primary-light: #4CAF50;
+            --accent: #FFB300;
+            --dark: #1a1a2e;
         }
         
         * {
@@ -34,7 +34,7 @@
         body {
             font-family: 'Cairo', sans-serif;
             min-height: 100vh;
-            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
+            background: linear-gradient(135deg, #1B5E20 0%, #2E7D32 50%, #388E3C 100%);
             display: flex;
             align-items: center;
             justify-content: center;
@@ -50,7 +50,7 @@
             left: 0;
             right: 0;
             bottom: 0;
-            background: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.03'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+            background: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.05'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
         }
         
         .login-wrapper {
@@ -68,7 +68,7 @@
         /* Left Side - Image */
         .login-image {
             flex: 1;
-            background: linear-gradient(135deg, rgba(26, 26, 46, 0.95), rgba(22, 33, 62, 0.95)),
+            background: linear-gradient(135deg, rgba(27, 94, 32, 0.95), rgba(46, 125, 50, 0.95)),
                         url('https://images.unsplash.com/photo-1586201375761-83865001e31c?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80');
             background-size: cover;
             background-position: center;
@@ -89,7 +89,7 @@
             left: 0;
             right: 0;
             bottom: 0;
-            background: linear-gradient(135deg, rgba(13, 110, 253, 0.3), rgba(15, 52, 96, 0.5));
+            background: linear-gradient(135deg, rgba(27, 94, 32, 0.3), rgba(46, 125, 50, 0.5));
         }
         
         .login-image > * {
@@ -119,7 +119,7 @@
         
         .login-image p {
             font-size: 1.1rem;
-            opacity: 0.8;
+            opacity: 0.9;
             max-width: 300px;
         }
         
@@ -139,7 +139,7 @@
         .form-header h1 {
             font-size: 1.8rem;
             font-weight: 800;
-            color: var(--dark);
+            color: var(--primary-dark);
             margin-bottom: 8px;
         }
         
@@ -154,7 +154,7 @@
         
         .form-label {
             font-weight: 600;
-            color: var(--dark);
+            color: var(--primary-dark);
             margin-bottom: 8px;
             font-size: 0.9rem;
         }
@@ -162,19 +162,19 @@
         .form-control {
             border-radius: 12px;
             padding: 14px 18px;
-            border: 2px solid var(--border);
+            border: 2px solid #e0e0e0;
             font-size: 1rem;
             transition: all 0.3s ease;
         }
         
         .form-control:focus {
             border-color: var(--primary);
-            box-shadow: 0 0 0 4px rgba(13, 110, 253, 0.1);
+            box-shadow: 0 0 0 4px rgba(46, 125, 50, 0.1);
         }
         
         .btn-login {
             width: 100%;
-            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+            background: linear-gradient(135deg, #1B5E20 0%, #2E7D32 100%);
             color: white;
             border: none;
             border-radius: 14px;
@@ -187,7 +187,7 @@
         
         .btn-login:hover {
             transform: translateY(-2px);
-            box-shadow: 0 10px 30px rgba(26, 26, 46, 0.3);
+            box-shadow: 0 10px 30px rgba(27, 94, 32, 0.3);
         }
         
         .form-check {
@@ -219,7 +219,7 @@
         .divider::before, .divider::after {
             content: '';
             flex: 1;
-            border-bottom: 1px solid var(--border);
+            border-bottom: 1px solid #e0e0e0;
         }
         
         .divider span {
@@ -246,12 +246,12 @@
         .language-switch {
             position: absolute;
             top: 20px;
-            right: 20px;
+            {{ app()->getLocale() == 'ar' ? 'left: 20px;' : 'right: 20px;' }}
             z-index: 10;
         }
         
         .language-switch a {
-            background: rgba(255, 255, 255, 0.15);
+            background: rgba(255, 255, 255, 0.2);
             backdrop-filter: blur(10px);
             color: white;
             padding: 8px 18px;
@@ -259,12 +259,12 @@
             text-decoration: none;
             font-weight: 600;
             font-size: 0.9rem;
-            border: 1px solid rgba(255, 255, 255, 0.2);
+            border: 1px solid rgba(255, 255, 255, 0.3);
             transition: all 0.3s ease;
         }
         
         .language-switch a:hover {
-            background: rgba(255, 255, 255, 0.25);
+            background: rgba(255, 255, 255, 0.3);
         }
         
         /* Alert */
@@ -404,7 +404,7 @@
 
             <div class="register-prompt">
                 <p class="mb-3">{{ app()->getLocale() == 'ar' ? 'ليس لديك حساب؟' : "Don't have an account?" }}</p>
-                <a href="{{ route('register') }}" class="btn btn-outline-primary">
+                <a href="{{ route('register') }}" class="btn btn-outline-success">
                     <i class="fas fa-user-plus me-2"></i>
                     {{ __('messages.register_now') }}
                 </a>

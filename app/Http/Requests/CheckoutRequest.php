@@ -18,7 +18,7 @@ class CheckoutRequest extends FormRequest
             'shipping_city' => 'nullable|string|max:100',
             'shipping_phone' => 'nullable|string|max:20',
             'notes' => 'nullable|string|max:1000',
-            'payment_method' => 'required|in:bank_transfer,visa,mada,paypal',
+'payment_method' => 'required|in:bank_transfer,visa,mada,paypal,cod',
         ];
     }
 

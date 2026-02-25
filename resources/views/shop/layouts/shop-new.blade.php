@@ -48,35 +48,55 @@
             box-shadow: 0 2px 10px rgba(0,0,0,0.1);
         }
         
-        /* Main Navbar */
-        .main-navbar {
-            background: linear-gradient(135deg, var(--primary-dark) 0%, var(--primary-color) 100%);
-            box-shadow: 0 4px 20px rgba(46, 125, 50, 0.15);
+        /* Navbar - White like welcome page */
+        .navbar {
+            background: rgba(255,255,255,0.98);
+            backdrop-filter: blur(10px);
+            padding: 15px 0;
+            box-shadow: 0 2px 20px rgba(0,0,0,0.08);
+            transition: all 0.3s ease;
+        }
+        
+        .navbar.scrolled {
+            padding: 10px 0;
         }
         
         .navbar-brand {
-            font-size: 1.6rem !important;
-            font-weight: 800 !important;
-            color: white !important;
+            font-size: 1.8rem;
+            font-weight: 800;
+            color: var(--primary-dark) !important;
+        }
+        
+        .navbar-brand i {
+            color: var(--primary-color);
         }
         
         .nav-link {
-            color: white !important;
-            transition: .3s ease;
-            padding: 0.5rem 1rem !important;
+            color: var(--dark-color) !important;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            position: relative;
+            padding: 8px 15px !important;
         }
         
         .nav-link:hover {
-            color: var(--accent-gold) !important;
+            color: var(--primary-color) !important;
         }
         
-        .search-bar {
-            border-radius: 25px;
+        .nav-link::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            width: 0;
+            height: 3px;
+            background: var(--primary-color);
+            transition: all 0.3s ease;
+            transform: translateX(-50%);
         }
         
-        .search-bar:focus {
-            border-color: var(--accent-gold);
-            box-shadow: none;
+        .nav-link:hover::after {
+            width: 80%;
         }
         
         .cart-icon-wrap {
@@ -84,21 +104,10 @@
             font-size: 0.95rem;
         }
         
-        @if(app()->getLocale() == 'ar')
         .cart-count {
             position: absolute;
             top: -8px;
-            left: -8px;
-        }
-        @else
-        .cart-count {
-            position: absolute;
-            top: -8px;
-            right: -8px;
-        }
-        @endif
-        
-        .cart-count {
+            {{ app()->getLocale() == 'ar' ? 'right: -8px;' : 'left: -8px;' }}
             background: var(--accent-orange);
             color: #fff;
             border-radius: 50%;
@@ -126,28 +135,44 @@
             color: #fff;
         }
         
-        .main-footer {
-            background: linear-gradient(135deg, #16213e 0%, #1a1a2e 100%);
+        /* Footer - Same as welcome page */
+        footer {
+            background: var(--dark-color);
             color: white;
-            padding: 60px 0 40px;
-            margin-top: 80px;
+            padding: 80px 0 20px;
         }
         
-        .footer-title {
+        .footer-brand {
+            font-size: 2rem;
+            font-weight: 800;
             color: var(--secondary-color);
             margin-bottom: 20px;
-            font-weight: 700;
-            font-size: 1.1rem;
+            display: block;
         }
         
-        .footer-links {
+        .footer-brand i {
+            color: var(--primary-light);
+        }
+        
+        .footer-about p {
+            color: rgba(255,255,255,0.7);
+            line-height: 1.8;
+        }
+        
+        .footer-links h5 {
+            color: var(--secondary-color);
+            font-weight: 700;
+            margin-bottom: 25px;
+            font-size: 1.2rem;
+        }
+        
+        .footer-links ul {
             list-style: none;
             padding: 0;
-            margin-bottom: 30px;
         }
         
         .footer-links li {
-            margin-bottom: 10px;
+            margin-bottom: 12px;
         }
         
         .footer-links a {
@@ -158,40 +183,38 @@
         }
         
         .footer-links a:hover {
-            color: var(--accent-gold);
+            color: var(--secondary-color);
             transform: translateX(5px);
         }
         
-        .social-icons {
+        .footer-social {
             display: flex;
             gap: 12px;
             margin-top: 20px;
         }
         
-        .social-icons a {
-            width: 40px;
-            height: 40px;
+        .footer-social a {
+            width: 45px;
+            height: 45px;
             border-radius: 50%;
             background: rgba(255,255,255,0.1);
             display: flex;
             align-items: center;
             justify-content: center;
             transition: all 0.3s ease;
-            color: white;
-            text-decoration: none;
         }
         
-        .social-icons a:hover {
+        .footer-social a:hover {
             background: var(--primary-color);
             transform: translateY(-3px);
         }
         
-        .copyright {
+        .footer-bottom {
             border-top: 1px solid rgba(255,255,255,0.1);
             padding-top: 25px;
+            margin-top: 50px;
             text-align: center;
             color: rgba(255,255,255,0.5);
-            font-size: 0.9rem;
         }
         
         @keyframes fadeInUp {
@@ -225,11 +248,12 @@
         @endif
     </div>
     
-    <!-- Navbar -->
-    <nav class="navbar navbar-expand-lg main-navbar fixed-top">
+    <!-- Navbar - White like welcome page -->
+    <nav class="navbar navbar-expand-lg navbar-light fixed-top" id="mainNav">
         <div class="container">
-            <a class="navbar-brand fw-bold" href="{{ route('home') }}">
-                <i class="fas fa-seedling me-2"></i>{{ __('messages.company_name') }}
+            <a class="navbar-brand" href="{{ route('home') }}">
+                <i class="fas fa-seedling me-2"></i>
+                {{ __('messages.company_name') }}
             </a>
             
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
@@ -237,45 +261,37 @@
             </button>
             
             <div class="collapse navbar-collapse" id="navbarNav">
-                <ul class="navbar-nav {{ app()->getLocale() == 'ar' ? 'me-auto' : 'ms-auto' }} align-items-center">
+                <ul class="navbar-nav {{ app()->getLocale() == 'ar' ? 'me-auto' : 'ms-auto' }}">
                     <li class="nav-item">
-                        <a class="nav-link" href="{{ route('home') }}">
-                            <i class="fas fa-home me-1"></i> {{ __('messages.home') }}
-                        </a>
+                        <a class="nav-link" href="{{ route('home') }}">{{ __('messages.home') }}</a>
                     </li>
                     
                     <li class="nav-item">
-                        <a class="nav-link" href="{{ route('shop.products.index') }}">
-                            <i class="fas fa-box-open me-1"></i> {{ __('messages.products') }}
-                        </a>
+                        <a class="nav-link" href="{{ route('shop.products.index') }}">{{ __('messages.products') }}</a>
                     </li>
                     
                     <li class="nav-item">
-                        <a class="nav-link" href="{{ route('about') }}">
-                            <i class="fas fa-info-circle me-1"></i> {{ __('messages.about') }}
-                        </a>
+                        <a class="nav-link" href="{{ route('about') }}">{{ __('messages.about') }}</a>
                     </li>
                     
                     <li class="nav-item">
-                        <a class="nav-link" href="{{ route('contact') }}">
-                            <i class="fas fa-envelope me-1"></i> {{ __('messages.contact') }}
-                        </a>
+                        <a class="nav-link" href="{{ route('contact') }}">{{ __('messages.contact') }}</a>
                     </li>
-                    
-                    <li class="nav-item">
-                        <a class="nav-link cart-icon-wrap" href="{{ route('shop.cart.index') }}">
-                            <i class="fas fa-shopping-cart me-1"></i> {{ __('messages.cart') }}
-                            <span class="cart-count" id="cartCountBadge">0</span>
-                        </a>
-                    </li>
+                </ul>
+                
+                <div class="d-flex gap-2 align-items-center">
+                    <a class="nav-link cart-icon-wrap" href="{{ route('shop.cart.index') }}">
+                        <i class="fas fa-shopping-cart"></i>
+                        <span class="cart-count" id="cartCountBadge">0</span>
+                    </a>
                     
                     @auth
-                        <li class="nav-item dropdown">
-                            <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button" data-bs-toggle="dropdown">
-                                <i class="fas fa-user-circle me-1"></i> {{ Auth::user()->name }}
+                        <div class="dropdown">
+                            <a class="btn btn-success dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown">
+                                <i class="fas fa-user me-1"></i> {{ Auth::user()->name }}
                             </a>
-                            <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="userDropdown">
-                                <li><a class="dropdown-item" href="{{ route('profile.edit') }}"><i class="fas fa-user me-2"></i>{{ __('messages.profile') }}</a></li>
+                            <ul class="dropdown-menu dropdown-menu-end">
+                                <li><a class="dropdown-item" href="{{ route('dashboard') }}"><i class="fas fa-tachometer-alt me-2"></i>{{ __('messages.dashboard') }}</a></li>
                                 <li><a class="dropdown-item" href="{{ route('shop.orders.index') }}"><i class="fas fa-shopping-bag me-2"></i>{{ __('messages.my_orders') }}</a></li>
                                 <li><hr class="dropdown-divider"></li>
                                 <li>
@@ -285,20 +301,18 @@
                                     </form>
                                 </li>
                             </ul>
-                        </li>
+                        </div>
                     @else
-                        <li class="nav-item">
-                            <a class="nav-link" href="{{ route('login') }}">
-                                <i class="fas fa-sign-in-alt me-1"></i> {{ __('messages.login') }}
-                            </a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="{{ route('register') }}">
-                                <i class="fas fa-user-plus me-1"></i> {{ __('messages.register') }}
-                            </a>
-                        </li>
+                        <a href="{{ route('login') }}" class="btn btn-outline-success">
+                            <i class="fas fa-sign-in-alt me-1"></i>
+                            {{ __('messages.login') }}
+                        </a>
+                        <a href="{{ route('register') }}" class="btn btn-warning text-dark">
+                            <i class="fas fa-user-plus me-1"></i>
+                            {{ __('messages.register') }}
+                        </a>
                     @endauth
-                </ul>
+                </div>
             </div>
         </div>
     </nav>
@@ -308,42 +322,53 @@
         @yield('content')
     </main>
 
-    <!-- Footer -->
-    <footer class="main-footer">
+    <!-- Footer - Same as welcome page -->
+    <footer>
         <div class="container">
-            <div class="row">
-                <div class="col-md-4 mb-4 mb-md-0">
-                    <h5 class="footer-title">{{ __('messages.company_name') }}</h5>
-                    <p class="small mb-0" style="color: rgba(255,255,255,0.7);">
-                        {{ app()->getLocale() == 'ar' ? 'المنصة الأولى في المملكة العربية السعودية لتجارة الأرز بين الشركات' : 'The first platform in Saudi Arabia for B2B rice trading' }}
-                    </p>
-                    <div class="social-icons">
+            <div class="row g-5">
+                <div class="col-lg-4">
+                    <span class="footer-brand">
+                        <i class="fas fa-seedling me-2"></i>
+                        {{ __('messages.company_name') }}
+                    </span>
+                    <div class="footer-about">
+                        <p>
+                            {{ app()->getLocale() == 'ar' 
+                                ? 'المنصة الأولى في المملكة العربية السعودية لتجارة الأرز بين الشركات. نوفر منتجات أرز عالية الجودة من أفضل الموردين.' 
+                                : 'The first platform in Saudi Arabia for B2B rice trading. We provide high-quality rice products from the best suppliers.' }}
+                        </p>
+                    </div>
+                    <div class="footer-social">
                         <a href="#"><i class="fab fa-facebook-f"></i></a>
                         <a href="#"><i class="fab fa-twitter"></i></a>
                         <a href="#"><i class="fab fa-instagram"></i></a>
                         <a href="#"><i class="fab fa-linkedin-in"></i></a>
                     </div>
                 </div>
-                <div class="col-md-4 mb-4 mb-md-0">
-                    <h5 class="footer-title">{{ app()->getLocale() == 'ar' ? 'روابط سريعة' : 'Quick Links' }}</h5>
-                    <ul class="footer-links">
-                        <li><a href="{{ route('shop.products.index') }}">{{ __('messages.products') }}</a></li>
-                        <li><a href="{{ route('home') }}">{{ __('messages.home') }}</a></li>
-                        <li><a href="{{ route('about') }}">{{ __('messages.about') }}</a></li>
-                        <li><a href="{{ route('contact') }}">{{ __('messages.contact') }}</a></li>
-                    </ul>
+                <div class="col-lg-4">
+                    <div class="footer-links">
+                        <h5>{{ app()->getLocale() == 'ar' ? 'روابط سريعة' : 'Quick Links' }}</h5>
+                        <ul>
+                            <li><a href="{{ route('home') }}">{{ __('messages.home') }}</a></li>
+                            <li><a href="{{ route('shop.products.index') }}">{{ __('messages.products') }}</a></li>
+                            <li><a href="{{ route('about') }}">{{ __('messages.about') }}</a></li>
+                            <li><a href="{{ route('contact') }}">{{ __('messages.contact') }}</a></li>
+                        </ul>
+                    </div>
                 </div>
-                <div class="col-md-4">
-                    <h5 class="footer-title">{{ app()->getLocale() == 'ar' ? 'تواصل معنا' : 'Contact Us' }}</h5>
-                    <ul class="footer-links">
-                        <li><a href="#"><i class="fas fa-phone me-2"></i>+966 55 123 4567</a></li>
-                        <li><a href="#"><i class="fas fa-envelope me-2"></i>info@riceb2b.com</a></li>
-                        <li><a href="#"><i class="fas fa-map-marker-alt me-2"></i>{{ app()->getLocale() == 'ar' ? 'الرياض' : 'Riyadh' }}</a></li>
-                    </ul>
+                <div class="col-lg-4">
+                    <div class="footer-links">
+                        <h5>{{ app()->getLocale() == 'ar' ? 'تواصل معنا' : 'Contact Us' }}</h5>
+                        <ul>
+                            <li><a href="#"><i class="fas fa-phone me-2"></i>+966 55 123 4567</a></li>
+                            <li><a href="#"><i class="fas fa-envelope me-2"></i>info@riceb2b.com</a></li>
+                            <li><a href="#"><i class="fas fa-map-marker-alt me-2"></i>{{ app()->getLocale() == 'ar' ? 'الرياض' : 'Riyadh' }}</a></li>
+                        </ul>
+                    </div>
                 </div>
             </div>
-            <div class="copyright">
-                <p class="mb-0">&copy; {{ date('Y') }} {{ __('messages.company_name') }}. {{ __('messages.copyright') }}</p>
+            <div class="footer-bottom">
+                <p>&copy; {{ date('Y') }} {{ __('messages.company_name') }}. {{ __('messages.copyright') }}</p>
             </div>
         </div>
     </footer>
@@ -357,6 +382,16 @@
         AOS.init({
             duration: 800,
             once: true
+        });
+        
+        // Navbar scroll effect
+        window.addEventListener('scroll', function() {
+            const navbar = document.getElementById('mainNav');
+            if (window.scrollY > 50) {
+                navbar.classList.add('scrolled');
+            } else {
+                navbar.classList.remove('scrolled');
+            }
         });
         
         // Update Cart Count

@@ -50,26 +50,55 @@
             box-shadow: 0 2px 10px rgba(0,0,0,0.1);
         }
         
-        /* Navbar */
-        .main-navbar {
-            background: linear-gradient(135deg, var(--primary-dark) 0%, var(--primary-color) 100%);
-            box-shadow: 0 4px 20px rgba(46, 125, 50, 0.15);
+        /* Navbar - White like welcome page */
+        .navbar {
+            background: rgba(255,255,255,0.98);
+            backdrop-filter: blur(10px);
+            padding: 15px 0;
+            box-shadow: 0 2px 20px rgba(0,0,0,0.08);
+            transition: all 0.3s ease;
+        }
+        
+        .navbar.scrolled {
+            padding: 10px 0;
         }
         
         .navbar-brand {
-            font-size: 1.6rem !important;
-            font-weight: 800 !important;
-            color: white !important;
+            font-size: 1.8rem;
+            font-weight: 800;
+            color: var(--primary-dark) !important;
+        }
+        
+        .navbar-brand i {
+            color: var(--primary-color);
         }
         
         .nav-link {
-            color: white !important;
-            transition: .3s ease;
-            padding: 0.5rem 1rem !important;
+            color: var(--dark-color) !important;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            position: relative;
+            padding: 8px 15px !important;
         }
         
         .nav-link:hover {
-            color: var(--accent-gold) !important;
+            color: var(--primary-color) !important;
+        }
+        
+        .nav-link::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            width: 0;
+            height: 3px;
+            background: var(--primary-color);
+            transition: all 0.3s ease;
+            transform: translateX(-50%);
+        }
+        
+        .nav-link:hover::after {
+            width: 80%;
         }
         
         /* Page Header */
@@ -78,317 +107,59 @@
                         url('https://images.unsplash.com/photo-1586201375761-83865001e31c?ixlib=rb-4.0.3&auto=format&fit=crop&w=1920&q=80');
             background-size: cover;
             background-position: center;
-            padding: 150px 0 80px;
-            position: relative;
+            padding: 180px 0 80px;
             margin-top: 70px;
         }
         
-        .page-header::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><circle cx="50" cy="50" r="1" fill="rgba(255,255,255,0.1)"/></svg>');
-            background-size: 25px 25px;
-        }
-        
-        .page-header .container {
-            position: relative;
-            z-index: 2;
-        }
-        
-        .page-header h1 {
-            font-size: 3.5rem;
-            font-weight: 800;
-            color: white;
-            margin-bottom: 15px;
-        }
-        
-        .page-header p {
-            font-size: 1.3rem;
-            color: rgba(255,255,255,0.9);
-        }
-        
-        .breadcrumb-item a {
-            color: rgba(255,255,255,0.7) !important;
-            text-decoration: none;
-        }
-        
-        .breadcrumb-item.active {
-            color: white !important;
-        }
-        
-        .breadcrumb-item + .breadcrumb-item::before {
-            color: rgba(255,255,255,0.5);
-        }
+        .page-header h1 { font-size: 3rem; font-weight: 800; color: white; margin-bottom: 10px; }
+        .page-header p { font-size: 1.2rem; color: rgba(255,255,255,0.9); }
+        .breadcrumb-item a { color: rgba(255,255,255,0.7) !important; text-decoration: none; }
+        .breadcrumb-item.active { color: white !important; }
         
         /* Contact Section */
-        .contact-section {
-            padding: 100px 0;
-        }
-        
-        .contact-card {
-            background: white;
-            border-radius: 25px;
-            padding: 45px;
-            box-shadow: 0 15px 50px rgba(0,0,0,0.1);
-            height: 100%;
-            border-top: 5px solid var(--primary-color);
-        }
-        
-        .contact-info-item {
-            display: flex;
-            align-items: flex-start;
-            margin-bottom: 35px;
-        }
-        
-        .contact-icon {
-            width: 70px;
-            height: 70px;
-            border-radius: 50%;
-            background: linear-gradient(135deg, var(--primary-color), var(--primary-light));
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            flex-shrink: 0;
-            transition: all 0.3s ease;
-        }
-        
-        @if(app()->getLocale() == 'ar')
-        .contact-icon {
-            margin-left: 20px;
-        }
-        @else
-        .contact-icon {
-            margin-right: 20px;
-        }
-        @endif
-        
-        .contact-info-item:hover .contact-icon {
-            transform: scale(1.1);
-            box-shadow: 0 10px 25px rgba(46, 125, 50, 0.4);
-        }
-        
-        .contact-icon i {
-            font-size: 1.8rem;
-            color: white;
-        }
-        
-        .contact-info-text h5 {
-            font-weight: 700;
-            color: var(--primary-dark);
-            margin-bottom: 5px;
-            font-size: 1.1rem;
-        }
-        
-        .contact-info-text p {
-            color: #666;
-            margin: 0;
-            font-size: 1rem;
-        }
-        
-        .section-title {
-            font-size: 1.8rem;
-            font-weight: 800;
-            color: var(--primary-dark);
-            margin-bottom: 35px;
-        }
+        .contact-section { padding: 80px 0; }
+        .contact-card { background: white; border-radius: 25px; padding: 45px; box-shadow: 0 15px 50px rgba(0,0,0,0.1); height: 100%; border-top: 5px solid var(--primary-color); }
+        .contact-info-item { display: flex; align-items: flex-start; margin-bottom: 35px; }
+        .contact-icon { width: 70px; height: 70px; border-radius: 50%; background: linear-gradient(135deg, var(--primary-color), var(--primary-light)); display: flex; align-items: center; justify-content: center; flex-shrink: 0; transition: all 0.3s ease; }
+        .contact-info-item:hover .contact-icon { transform: scale(1.1); box-shadow: 0 10px 25px rgba(46, 125, 50, 0.4); }
+        .contact-icon i { font-size: 1.8rem; color: white; }
+        .contact-info-text h5 { font-weight: 700; color: var(--primary-dark); margin-bottom: 5px; }
+        .contact-info-text p { color: #666; margin: 0; }
+        .section-title { font-size: 1.8rem; font-weight: 800; color: var(--primary-dark); margin-bottom: 35px; }
         
         /* Contact Form */
-        .contact-form {
-            background: white;
-            border-radius: 25px;
-            padding: 45px;
-            box-shadow: 0 15px 50px rgba(0,0,0,0.1);
-        }
-        
-        .form-label {
-            font-weight: 600;
-            color: var(--primary-dark);
-            margin-bottom: 8px;
-        }
-        
-        .form-control {
-            border-radius: 12px;
-            padding: 14px 18px;
-            border: 2px solid #e0e0e0;
-            transition: all 0.3s ease;
-        }
-        
-        .form-control:focus {
-            border-color: var(--primary-color);
-            box-shadow: 0 0 0 4px rgba(46, 125, 50, 0.1);
-        }
-        
-        .btn-submit {
-            background: linear-gradient(135deg, var(--primary-color), var(--primary-dark));
-            color: white;
-            border: none;
-            padding: 16px 45px;
-            border-radius: 30px;
-            font-weight: 700;
-            font-size: 1.1rem;
-            transition: all 0.3s ease;
-        }
-        
-        .btn-submit:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 15px 35px rgba(46, 125, 50, 0.4);
-        }
+        .contact-form { background: white; border-radius: 25px; padding: 45px; box-shadow: 0 15px 50px rgba(0,0,0,0.1); }
+        .form-label { font-weight: 600; color: var(--primary-dark); margin-bottom: 8px; }
+        .form-control { border-radius: 12px; padding: 14px 18px; border: 2px solid #e0e0e0; transition: all 0.3s ease; }
+        .form-control:focus { border-color: var(--primary-color); box-shadow: 0 0 0 4px rgba(46, 125, 50, 0.1); }
+        .btn-submit { background: linear-gradient(135deg, var(--primary-color), var(--primary-dark)); color: white; border: none; padding: 16px 45px; border-radius: 30px; font-weight: 700; font-size: 1.1rem; transition: all 0.3s ease; }
+        .btn-submit:hover { transform: translateY(-3px); box-shadow: 0 15px 35px rgba(46, 125, 50, 0.4); }
         
         /* Map Section */
-        .map-section {
-            height: 450px;
-            background: linear-gradient(135deg, var(--light-color), #c8e6c9);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            position: relative;
-            overflow: hidden;
-        }
-        
-        .map-section::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><circle cx="50" cy="50" r="1" fill="rgba(46,125,50,0.1)"/></svg>');
-            background-size: 20px 20px;
-        }
-        
-        .map-section i {
-            font-size: 6rem;
-            color: var(--primary-color);
-            position: relative;
-            z-index: 2;
-        }
-        
-        .map-section p {
-            position: relative;
-            z-index: 2;
-            color: #666;
-            margin-top: 20px;
-            font-size: 1.1rem;
-        }
+        .map-section { height: 450px; background: linear-gradient(135deg, var(--light-color), #c8e6c9); display: flex; align-items: center; justify-content: center; }
+        .map-section i { font-size: 6rem; color: var(--primary-color); }
+        .map-section p { margin-top: 20px; color: #666; }
         
         /* Footer */
-        .main-footer {
-            background: linear-gradient(135deg, var(--dark-color) 0%, #16213e 100%);
-            color: white;
-            padding: 80px 0 30px;
-        }
+        footer { background: var(--dark-color); color: white; padding: 80px 0 20px; }
+        .footer-brand { font-size: 2rem; font-weight: 800; color: var(--secondary-color); margin-bottom: 20px; display: block; }
+        .footer-brand i { color: var(--primary-light); }
+        .footer-about p { color: rgba(255,255,255,0.7); line-height: 1.8; }
+        .footer-links h5 { color: var(--secondary-color); font-weight: 700; margin-bottom: 25px; font-size: 1.2rem; }
+        .footer-links ul { list-style: none; padding: 0; }
+        .footer-links li { margin-bottom: 12px; }
+        .footer-links a { color: rgba(255,255,255,0.7); text-decoration: none; transition: all 0.3s ease; display: inline-block; }
+        .footer-links a:hover { color: var(--secondary-color); transform: translateX(5px); }
+        .footer-social { display: flex; gap: 12px; margin-top: 20px; }
+        .footer-social a { width: 45px; height: 45px; border-radius: 50%; background: rgba(255,255,255,0.1); display: flex; align-items: center; justify-content: center; transition: all 0.3s ease; }
+        .footer-social a:hover { background: var(--primary-color); transform: translateY(-3px); }
+        .footer-bottom { border-top: 1px solid rgba(255,255,255,0.1); padding-top: 25px; margin-top: 50px; text-align: center; color: rgba(255,255,255,0.5); }
         
-        .footer-brand {
-            font-size: 2rem;
-            font-weight: 800;
-            color: var(--secondary-color);
-            margin-bottom: 20px;
-            display: block;
-        }
-        
-        .footer-brand i {
-            color: var(--primary-light);
-        }
-        
-        .footer-about p {
-            color: rgba(255,255,255,0.7);
-            line-height: 1.8;
-        }
-        
-        .footer-links h5 {
-            color: var(--secondary-color);
-            font-weight: 700;
-            margin-bottom: 25px;
-            font-size: 1.2rem;
-        }
-        
-        .footer-links ul {
-            list-style: none;
-            padding: 0;
-        }
-        
-        .footer-links li {
-            margin-bottom: 12px;
-        }
-        
-        .footer-links a {
-            color: rgba(255,255,255,0.7);
-            text-decoration: none;
-            transition: all 0.3s ease;
-            display: inline-block;
-        }
-        
-        .footer-links a:hover {
-            color: var(--accent-gold);
-            transform: translateX(5px);
-        }
-        
-        .social-icons {
-            display: flex;
-            gap: 12px;
-            margin-top: 20px;
-        }
-        
-        .social-icons a {
-            width: 45px;
-            height: 45px;
-            border-radius: 50%;
-            background: rgba(255,255,255,0.1);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            transition: all 0.3s ease;
-        }
-        
-        .social-icons a:hover {
-            background: var(--primary-color);
-            transform: translateY(-3px);
-        }
-        
-        .copyright {
-            border-top: 1px solid rgba(255,255,255,0.1);
-            padding-top: 25px;
-            margin-top: 50px;
-            text-align: center;
-            color: rgba(255,255,255,0.5);
-        }
-        
-        /* Alert */
-        .alert-success {
-            border-radius: 12px;
-            border: none;
-            background: linear-gradient(135deg, #28a745, #20c997);
-            color: white;
-        }
-        
-        /* Responsive */
-        @media (max-width: 991px) {
-            .page-header h1 {
-                font-size: 2.5rem;
-            }
-        }
+        .alert-success { border-radius: 12px; border: none; background: linear-gradient(135deg, #28a745, #20c997); color: white; }
         
         @media (max-width: 768px) {
-            .page-header h1 {
-                font-size: 2rem;
-            }
-            
-            .contact-card, .contact-form {
-                padding: 25px;
-            }
-            
-            .contact-info-item {
-                margin-bottom: 20px;
-            }
-            
-            .contact-icon {
-                width: 55px;
-                height: 55px;
-            }
+            .page-header h1 { font-size: 2rem; }
+            .contact-card, .contact-form { padding: 25px; }
         }
     </style>
 </head>
@@ -406,8 +177,8 @@
         @endif
     </div>
     
-    <!-- Navbar -->
-    <nav class="navbar navbar-expand-lg main-navbar fixed-top">
+    <!-- Navbar - White like welcome page -->
+    <nav class="navbar navbar-expand-lg navbar-light fixed-top" id="mainNav">
         <div class="container">
             <a class="navbar-brand" href="{{ route('home') }}">
                 <i class="fas fa-seedling me-2"></i>
@@ -419,35 +190,27 @@
             <div class="collapse navbar-collapse" id="navbarNav">
                 <ul class="navbar-nav {{ app()->getLocale() == 'ar' ? 'me-auto' : 'ms-auto' }}">
                     <li class="nav-item">
-                        <a class="nav-link" href="{{ route('home') }}">
-                            <i class="fas fa-home me-1"></i> {{ __('messages.home') }}
-                        </a>
+                        <a class="nav-link" href="{{ route('home') }}">{{ __('messages.home') }}</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="{{ route('shop.products.index') }}">
-                            <i class="fas fa-box-open me-1"></i> {{ __('messages.products') }}
-                        </a>
+                        <a class="nav-link" href="{{ route('shop.products.index') }}">{{ __('messages.products') }}</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="{{ route('about') }}">
-                            <i class="fas fa-info-circle me-1"></i> {{ __('messages.about') }}
-                        </a>
+                        <a class="nav-link" href="{{ route('about') }}">{{ __('messages.about') }}</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="{{ route('contact') }}">
-                            <i class="fas fa-envelope me-1"></i> {{ __('messages.contact') }}
-                        </a>
+                        <a class="nav-link" href="{{ route('contact') }}">{{ __('messages.contact') }}</a>
                     </li>
                 </ul>
                 
                 <div class="d-flex gap-2">
                     @auth
-                        <a href="{{ route('dashboard') }}" class="btn btn-light text-success">
+                        <a href="{{ route('dashboard') }}" class="btn btn-success">
                             <i class="fas fa-user me-1"></i>
                             {{ __('messages.dashboard') }}
                         </a>
                     @else
-                        <a href="{{ route('login') }}" class="btn btn-outline-light">
+                        <a href="{{ route('login') }}" class="btn btn-outline-success">
                             <i class="fas fa-sign-in-alt me-1"></i>
                             {{ __('messages.login') }}
                         </a>
@@ -467,7 +230,7 @@
             <nav aria-label="breadcrumb">
                 <ol class="breadcrumb mb-3">
                     <li class="breadcrumb-item"><a href="{{ route('home') }}">{{ app()->getLocale() == 'ar' ? 'الرئيسية' : 'Home' }}</a></li>
-                    <li class="breadcrumb-item active" aria-current="page">{{ __('messages.contact') }}</li>
+                    <li class="breadcrumb-item active">{{ __('messages.contact') }}</li>
                 </ol>
             </nav>
             <h1>{{ __('messages.contact') }}</h1>
@@ -479,18 +242,15 @@
     <section class="contact-section">
         <div class="container">
             <div class="row g-5">
-                <!-- Contact Info -->
                 <div class="col-lg-5">
                     <div class="contact-card" data-aos="fade-up">
-                        <h3 class="section-title">
-                            {{ app()->getLocale() == 'ar' ? 'معلومات التواصل' : 'Contact Information' }}
-                        </h3>
+                        <h3 class="section-title">{{ app()->getLocale() == 'ar' ? 'معلومات التواصل' : 'Contact Information' }}</h3>
                         
                         <div class="contact-info-item">
                             <div class="contact-icon">
                                 <i class="fas fa-map-marker-alt"></i>
                             </div>
-                            <div class="contact-info-text">
+                            <div class="contact-info-text" style="{{ app()->getLocale() == 'ar' ? 'margin-right: 20px;' : 'margin-left: 20px;' }}">
                                 <h5>{{ app()->getLocale() == 'ar' ? 'العنوان' : 'Address' }}</h5>
                                 <p>{{ app()->getLocale() == 'ar' ? 'الرياض، المملكة العربية السعودية' : 'Riyadh, Saudi Arabia' }}</p>
                             </div>
@@ -500,7 +260,7 @@
                             <div class="contact-icon">
                                 <i class="fas fa-phone"></i>
                             </div>
-                            <div class="contact-info-text">
+                            <div class="contact-info-text" style="{{ app()->getLocale() == 'ar' ? 'margin-right: 20px;' : 'margin-left: 20px;' }}">
                                 <h5>{{ app()->getLocale() == 'ar' ? 'الهاتف' : 'Phone' }}</h5>
                                 <p>+966 55 123 4567</p>
                             </div>
@@ -510,7 +270,7 @@
                             <div class="contact-icon">
                                 <i class="fas fa-envelope"></i>
                             </div>
-                            <div class="contact-info-text">
+                            <div class="contact-info-text" style="{{ app()->getLocale() == 'ar' ? 'margin-right: 20px;' : 'margin-left: 20px;' }}">
                                 <h5>{{ app()->getLocale() == 'ar' ? 'البريد الإلكتروني' : 'Email' }}</h5>
                                 <p>info@riceb2b.com</p>
                             </div>
@@ -520,16 +280,15 @@
                             <div class="contact-icon">
                                 <i class="fas fa-clock"></i>
                             </div>
-                            <div class="contact-info-text">
+                            <div class="contact-info-text" style="{{ app()->getLocale() == 'ar' ? 'margin-right: 20px;' : 'margin-left: 20px;' }}">
                                 <h5>{{ app()->getLocale() == 'ar' ? 'أوقات العمل' : 'Working Hours' }}</h5>
                                 <p>{{ app()->getLocale() == 'ar' ? 'الأحد - الخميس: 8 ص - 6 م' : 'Sun - Thu: 8 AM - 6 PM' }}</p>
                             </div>
                         </div>
                         
-                        <!-- Social Media -->
                         <div class="mt-4">
                             <h5 class="mb-3">{{ app()->getLocale() == 'ar' ? 'تابعنا' : 'Follow Us' }}</h5>
-                            <div class="social-icons">
+                            <div class="footer-social">
                                 <a href="#" class="text-white"><i class="fab fa-facebook-f"></i></a>
                                 <a href="#" class="text-white"><i class="fab fa-twitter"></i></a>
                                 <a href="#" class="text-white"><i class="fab fa-instagram"></i></a>
@@ -539,7 +298,6 @@
                     </div>
                 </div>
                 
-                <!-- Contact Form -->
                 <div class="col-lg-7">
                     <div class="contact-form" data-aos="fade-up" data-aos-delay="200">
                         <h3 class="section-title">{{ app()->getLocale() == 'ar' ? 'أرسل لنا رسالة' : 'Send Us a Message' }}</h3>
@@ -602,7 +360,7 @@
     </section>
     
     <!-- Footer -->
-    <footer class="main-footer">
+    <footer>
         <div class="container">
             <div class="row g-5">
                 <div class="col-lg-4">
@@ -617,11 +375,11 @@
                                 : 'The first platform in Saudi Arabia for B2B rice trading. We provide high-quality rice products from the best suppliers.' }}
                         </p>
                     </div>
-                    <div class="social-icons">
+                    <div class="footer-social">
                         <a href="#"><i class="fab fa-facebook-f"></i></a>
                         <a href="#"><i class="fab fa-twitter"></i></a>
                         <a href="#"><i class="fab fa-instagram"></i></a>
-                        <a href="#"><i class="fab fa-linkedin-in"></i></a>
+                        <a href="#"><i class="fab fa-linkedian-in"></i></a>
                     </div>
                 </div>
                 <div class="col-lg-4">
@@ -641,12 +399,12 @@
                         <ul>
                             <li><a href="#"><i class="fas fa-phone me-2"></i>+966 55 123 4567</a></li>
                             <li><a href="#"><i class="fas fa-envelope me-2"></i>info@riceb2b.com</a></li>
-                            <li><a href="#"><i class="fas fa-map-marker-alt me-2"></i>{{ app()->getLocale() == 'ar' ? 'الرياض، المملكة العربية السعودية' : 'Riyadh, Saudi Arabia' }}</a></li>
+                            <li><a href="#"><i class="fas fa-map-marker-alt me-2"></i>{{ app()->getLocale() == 'ar' ? 'الرياض' : 'Riyadh' }}</a></li>
                         </ul>
                     </div>
                 </div>
             </div>
-            <div class="copyright">
+            <div class="footer-bottom">
                 <p>&copy; {{ date('Y') }} {{ __('messages.company_name') }}. {{ __('messages.copyright') }}</p>
             </div>
         </div>
@@ -655,9 +413,15 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
     <script>
-        AOS.init({
-            duration: 800,
-            once: true
+        AOS.init({ duration: 800, once: true });
+        
+        window.addEventListener('scroll', function() {
+            const navbar = document.getElementById('mainNav');
+            if (window.scrollY > 50) {
+                navbar.classList.add('scrolled');
+            } else {
+                navbar.classList.remove('scrolled');
+            }
         });
     </script>
 </body>
