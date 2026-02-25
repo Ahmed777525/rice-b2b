@@ -9,23 +9,19 @@
 
 @section('content')
 <!-- Page Header -->
-<div class="bg-white rounded-2xl shadow-sm p-6 mb-8 border border-green-100">
-    <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
-        <div class="flex items-center gap-4">
-            <div class="w-14 h-14 bg-green-50 rounded-full flex items-center justify-center">
-                <i class="fas fa-boxes text-green-600 text-xl"></i>
+<div class="bg-white rounded-3 shadow-sm p-4 mb-4">
+    <div class="d-flex justify-content-between align-items-center flex-wrap gap-3">
+        <div class="d-flex align-items-center gap-3">
+            <div class="bg-success bg-opacity-10 rounded-circle d-flex align-items-center justify-content-center" style="width: 50px; height: 50px;">
+                <i class="fas fa-boxes text-success fs-5"></i>
             </div>
             <div>
-                <h1 class="text-2xl font-bold text-green-800">
-                    {{ $isArabic ? 'المنتجات' : 'Products' }}
-                </h1>
-                <p class="text-green-600 text-sm mt-1">
-                    {{ $isArabic ? 'تصفح مجموعتنا الكاملة من الأرز premium' : 'Browse our premium rice collection' }}
-                </p>
+                <h4 class="fw-bold text-success mb-0">{{ $isArabic ? 'المنتجات' : 'Products' }}</h4>
+                <small class="text-success">{{ $isArabic ? 'تصفح مجموعتنا الكاملة' : 'Browse our collection' }}</small>
             </div>
         </div>
-        <div class="bg-green-50 text-green-700 px-5 py-2 rounded-full font-semibold inline-flex items-center gap-2">
-            <i class="fas fa-cubes"></i>
+        <div class="bg-success bg-opacity-10 text-success px-4 py-2 rounded-pill fw-bold">
+            <i class="fas fa-cubes me-2"></i>
             {{ $products->count() ?? 0 }} {{ $isArabic ? 'منتج' : 'Products' }}
         </div>
     </div>
@@ -33,17 +29,15 @@
 
 <!-- Category Filters -->
 @if(isset($categories) && $categories->count() > 0)
-<div class="mb-8">
-    <div class="flex flex-wrap gap-3">
+<div class="mb-4">
+    <div class="d-flex flex-wrap gap-2">
         <a href="{{ route('shop.products.index') }}" 
-           class="px-4 py-2 rounded-full font-medium transition-all duration-300
-                  {{ !request('category') ? 'bg-green-600 text-white shadow-lg shadow-green-600/30' : 'bg-white text-gray-600 hover:bg-green-50 border border-gray-200' }}">
+           class="btn {{ !request('category') ? 'btn-success' : 'btn-outline-success' }} rounded-pill">
             {{ $isArabic ? 'الكل' : 'All' }}
         </a>
         @foreach($categories as $category)
         <a href="{{ route('shop.products.index', ['category' => $category->id]) }}" 
-           class="px-4 py-2 rounded-full font-medium transition-all duration-300
-                  {{ request('category') == $category->id ? 'bg-green-600 text-white shadow-lg shadow-green-600/30' : 'bg-white text-gray-600 hover:bg-green-50 border border-gray-200' }}">
+           class="btn {{ request('category') == $category->id ? 'btn-success' : 'btn-outline-success' }} rounded-pill">
             {{ $category->localized_name }}
         </a>
         @endforeach
@@ -53,7 +47,7 @@
 
 <!-- Products Grid -->
 @if($products->count() > 0)
-    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+    <div class="row g-4">
         @foreach($products as $product)
         @php
             $userBranchId = Auth::check() ? Auth::user()->branch_id : null;
@@ -80,103 +74,85 @@
         @endphp
 
         <!-- Product Card -->
-        <div class="bg-white rounded-2xl shadow-md hover:shadow-xl transition-all duration-300 overflow-hidden group flex flex-col">
-            <!-- Product Image -->
-            <div class="relative bg-gradient-to-br from-gray-50 to-gray-100 p-8 h-48 flex items-center justify-center overflow-hidden">
-                @if($isNew)
-                <span class="absolute top-3 {{ $isArabic ? 'left-3' : 'right-3'}} bg-green-600 text-white px-3 py-1 rounded-full text-xs font-bold z-10 shadow-lg">
-                    <i class="fas fa-star text-xs ml-1"></i>{{ $isArabic ? 'جديد' : 'NEW' }}
-                </span>
-                @endif
-                
-                <i class="fas fa-sack-grain text-6xl text-gray-400 group-hover:text-green-600 group-hover:scale-110 transition-transform duration-300"></i>
-            </div>
-
-            <!-- Product Body -->
-            <div class="p-5 flex-1 flex flex-col">
-                <!-- Category -->
-                <div class="text-xs font-semibold text-green-600 uppercase tracking-wide mb-2">
-                    <i class="fas fa-tag ml-1"></i>
-                    {{ $product->category?->localized_name ?? ($isArabic ? 'غير مصنف' : 'Uncategorized') }}
-                </div>
-
-                <!-- Title -->
-                <h3 class="text-lg font-bold text-gray-800 mb-3 line-clamp-2">
-                    <a href="{{ route('shop.products.show', $product->slug) }}" class="hover:text-green-600 transition-colors">
-                        {{ $product->localized_name }}
-                    </a>
-                </h3>
-
-                <!-- Stock Status -->
-                <div class="flex items-center gap-2 mb-4 py-3 border-y border-dashed border-gray-200">
-                    <span class="w-3 h-3 rounded-full {{ $stock && $stock->available_quantity > 0 ? 'bg-green-500 animate-pulse' : 'bg-red-500' }}"></span>
-                    <span class="text-sm font-medium {{ $stock && $stock->available_quantity > 0 ? 'text-gray-600' : 'text-red-600' }}">
-                        <strong class="text-lg">{{ number_format($stock->available_quantity ?? 0) }}</strong>
-                        {{ $isArabic ? 'كجم متوفر' : 'KG Available' }}
+        <div class="col-md-6 col-lg-4">
+            <div class="card h-100 border-0 shadow-sm" style="border-radius: 20px; overflow: hidden; background: linear-gradient(145deg, #ffffff 0%, #f8f9fa 100%);">
+                <!-- Product Image -->
+                <div class="position-relative bg-light p-5 text-center" style="height: 180px;">
+                    @if($isNew)
+                    <span class="position-absolute top-0 {{ $isArabic ? 'start-0' : 'end-0'}} m-2 badge bg-success">
+                        {{ $isArabic ? 'جديد' : 'NEW' }}
                     </span>
+                    @endif
+                    <i class="fas fa-sack-grain text-secondary" style="font-size: 4rem; opacity: 0.5;"></i>
                 </div>
 
-                <!-- Price Section -->
-                @if(Auth::check() && $price)
-                    <div class="mt-auto">
-                        <div class="flex items-baseline gap-2 mb-4">
-                            <span class="text-2xl font-extrabold text-green-700">{{ number_format($price->price, 2) }}</span>
-                            <span class="text-green-600 font-medium">{{ $isArabic ? 'ر.س' : 'SAR' }}</span>
+                <!-- Product Body -->
+                <div class="card-body p-4">
+                    <!-- Category -->
+                    <small class="text-success fw-bold text-uppercase">
+                        <i class="fas fa-tag me-1"></i>
+                        {{ $product->category?->localized_name ?? '---' }}
+                    </small>
+
+                    <!-- Title -->
+                    <h5 class="fw-bold my-3" style="color: #1a5632;">
+                        <a href="{{ route('shop.products.show', $product->slug) }}" class="text-decoration-none" style="color: inherit;">
+                            {{ $product->localized_name }}
+                        </a>
+                    </h5>
+
+                    <!-- Stock Status -->
+                    <div class="d-flex align-items-center gap-2 py-2 border-top border-bottom border-secondary border-opacity-25 mb-3">
+                        <span class="rounded-circle {{ $stock && $stock->available_quantity > 0 ? 'bg-success' : 'bg-danger' }}" style="width: 10px; height: 10px;"></span>
+                        <small class="{{ $stock && $stock->available_quantity > 0 ? 'text-secondary' : 'text-danger' }}">
+                            <strong>{{ number_format($stock->available_quantity ?? 0) }}</strong> {{ $isArabic ? 'كجم متوفر' : 'KG Available' }}
+                        </small>
+                    </div>
+
+                    <!-- Price Section -->
+                    @if(Auth::check() && $price)
+                        <div class="mb-3">
+                            <span class="fs-3 fw-bold text-success">{{ number_format($price->price, 2) }}</span>
+                            <small class="text-success fw-bold">{{ $isArabic ? 'ر.س' : 'SAR' }}</small>
                         </div>
 
                         @if($stock && $stock->available_quantity > 0)
-                            <!-- Add to Cart Form -->
-                            <form action="{{ route('shop.cart.add') }}" method="POST" class="add-to-cart-form">
+                            <form action="{{ route('shop.cart.add') }}" method="POST">
                                 @csrf
                                 <input type="hidden" name="product_id" value="{{ $product->id }}">
                                 <input type="hidden" name="quantity" value="{{ $product->min_order_quantity ?? 1 }}">
-                                <button type="submit" 
-                                        class="w-full bg-gradient-to-r from-green-600 to-green-700 hover:from-green-700 hover:to-green-800 text-white font-bold py-3 px-4 rounded-full flex items-center justify-center gap-2 shadow-lg shadow-green-600/30 hover:shadow-xl hover:shadow-green-600/40 transition-all duration-300 hover:-translate-y-1">
-                                    <i class="fas fa-cart-plus"></i>
+                                <button type="submit" class="btn btn-success w-100 fw-bold rounded-pill py-2 add-to-cart-btn">
+                                    <i class="fas fa-cart-plus me-2"></i>
                                     {{ $isArabic ? 'أضف للسلة' : 'Add to Cart' }}
                                 </button>
                             </form>
                         @else
-                            <div class="w-full bg-red-100 text-red-600 font-bold py-3 px-4 rounded-full flex items-center justify-center gap-2">
-                                <i class="fas fa-exclamation-triangle"></i>
+                            <div class="btn btn-danger w-100 fw-bold rounded-pill py-2 opacity-75">
+                                <i class="fas fa-exclamation-triangle me-2"></i>
                                 {{ $isArabic ? 'غير متوفر' : 'Out of Stock' }}
                             </div>
                         @endif
 
-                        <!-- View Details Link -->
-                        <a href="{{ route('shop.products.show', $product->slug) }}" 
-                           class="block w-full text-center mt-3 py-2 text-green-600 font-medium hover:text-green-800 transition-colors">
-                            <i class="fas fa-eye ml-1"></i>
+                        <a href="{{ route('shop.products.show', $product->slug) }}" class="d-block text-center mt-3 text-success text-decoration-none fw-bold">
+                            <i class="fas fa-eye me-1"></i>
                             {{ $isArabic ? 'عرض التفاصيل' : 'View Details' }}
                         </a>
-                    </div>
-                @elseif(Auth::check())
-                    <!-- Price Not Available -->
-                    <div class="mt-auto">
-                        <div class="bg-gray-100 text-gray-500 font-bold py-3 px-4 rounded-full flex items-center justify-center gap-2 mb-3">
-                            <i class="fas fa-ban"></i>
+                    @elseif(Auth::check())
+                        <div class="bg-light text-secondary rounded-pill py-2 text-center mb-3 fw-bold">
+                            <i class="fas fa-ban me-2"></i>
                             {{ $isArabic ? 'السعر غير متاح' : 'Price not available' }}
                         </div>
-                        <a href="{{ route('shop.products.show', $product->slug) }}" 
-                           class="block w-full text-center py-2 text-green-600 font-medium hover:text-green-800 transition-colors">
-                            <i class="fas fa-eye ml-1"></i>
-                            {{ $isArabic ? 'عرض التفاصيل' : 'View Details' }}
-                        </a>
-                    </div>
-                @else
-                    <!-- Login Required -->
-                    <div class="mt-auto">
-                        <div class="bg-blue-50 text-blue-600 font-bold py-3 px-4 rounded-full flex items-center justify-center gap-2 mb-3">
-                            <i class="fas fa-lock"></i>
+                    @else
+                        <div class="bg-info bg-opacity-10 text-info rounded-pill py-2 text-center mb-3 fw-bold">
+                            <i class="fas fa-lock me-2"></i>
                             {{ $isArabic ? 'سجل دخول لعرض السعر' : 'Login to view price' }}
                         </div>
-                        <a href="{{ route('login') }}" 
-                           class="block w-full bg-gradient-to-r from-green-600 to-green-700 text-white font-bold py-3 px-4 rounded-full flex items-center justify-center gap-2 shadow-lg hover:shadow-xl transition-all">
-                            <i class="fas fa-sign-in-alt"></i>
+                        <a href="{{ route('login') }}" class="btn btn-success w-100 fw-bold rounded-pill py-2">
+                            <i class="fas fa-sign-in-alt me-2"></i>
                             {{ $isArabic ? 'تسجيل الدخول' : 'Login' }}
                         </a>
-                    </div>
-                @endif
+                    @endif
+                </div>
             </div>
         </div>
         @endforeach
@@ -184,29 +160,27 @@
 
     <!-- Pagination -->
     @if(method_exists($products, 'links'))
-    <div class="mt-12 flex justify-center">
+    <div class="mt-5 d-flex justify-content-center">
         {{ $products->links() }}
     </div>
     @endif
 @else
     <!-- Empty State -->
-    <div class="bg-white rounded-2xl shadow-sm p-16 text-center">
-        <div class="w-24 h-24 bg-green-50 rounded-full flex items-center justify-center mx-auto mb-6">
-            <i class="fas fa-box-open text-4xl text-green-400"></i>
-        </div>
-        <h3 class="text-2xl font-bold text-gray-800 mb-3">{{ $isArabic ? 'لا توجد منتجات' : 'No Products Found' }}</h3>
-        <p class="text-gray-500 mb-6">{{ $isArabic ? 'سيتم إضافة منتجات قريباً' : 'Products will be added soon' }}</p>
-        <a href="{{ route('home') }}" class="inline-flex items-center gap-2 bg-green-600 text-white px-6 py-3 rounded-full font-bold hover:bg-green-700 transition-colors">
-            <i class="fas fa-home"></i>
+    <div class="bg-white rounded-3 shadow-sm p-5 text-center">
+        <i class="fas fa-box-open text-secondary fs-1 mb-3 d-block" style="opacity: 0.5;"></i>
+        <h5 class="fw-bold">{{ $isArabic ? 'لا توجد منتجات' : 'No Products Found' }}</h5>
+        <p class="text-secondary">{{ $isArabic ? 'سيتم إضافة منتجات قريباً' : 'Products will be added soon' }}</p>
+        <a href="{{ route('home') }}" class="btn btn-success rounded-pill px-4">
+            <i class="fas fa-home me-2"></i>
             {{ $isArabic ? 'العودة للرئيسية' : 'Back to Home' }}
         </a>
     </div>
 @endif
 
-<!-- JavaScript for Add to Cart -->
+<!-- JavaScript -->
 <script>
 document.addEventListener('DOMContentLoaded', function() {
-    const forms = document.querySelectorAll('.add-to-cart-form');
+    const forms = document.querySelectorAll('form[action*="cart/add"]');
     
     forms.forEach(form => {
         form.addEventListener('submit', async function(e) {
@@ -214,7 +188,6 @@ document.addEventListener('DOMContentLoaded', function() {
             
             const btn = this.querySelector('button');
             const originalHTML = btn.innerHTML;
-            const originalClass = btn.className;
             
             btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i>';
             btn.disabled = true;
@@ -223,23 +196,25 @@ document.addEventListener('DOMContentLoaded', function() {
                 await new Promise(resolve => setTimeout(resolve, 800));
                 
                 btn.innerHTML = '<i class="fas fa-check"></i> {{ $isArabic ? "تمت الإضافة" : "Added" }}';
-                btn.classList.remove('from-green-600', 'to-green-700', 'hover:from-green-700', 'hover:to-green-800');
-                btn.classList.add('from-amber-500', 'to-amber-600');
+                btn.classList.remove('btn-success');
+                btn.classList.add('btn-warning', 'text-dark');
                 
                 setTimeout(() => {
                     btn.innerHTML = originalHTML;
-                    btn.className = originalClass;
+                    btn.classList.add('btn-success');
+                    btn.classList.remove('btn-warning', 'text-dark');
                     btn.disabled = false;
                 }, 2000);
                 
             } catch (error) {
                 btn.innerHTML = '<i class="fas fa-exclamation-circle"></i>';
-                btn.classList.remove('from-green-600', 'to-green-700');
-                btn.classList.add('bg-red-600');
+                btn.classList.remove('btn-success');
+                btn.classList.add('btn-danger');
                 
                 setTimeout(() => {
                     btn.innerHTML = originalHTML;
-                    btn.className = originalClass;
+                    btn.classList.add('btn-success');
+                    btn.classList.remove('btn-danger');
                     btn.disabled = false;
                 }, 2000);
             }
